@@ -28,6 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 
 	readabilityStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+	readabilityStatusBarItem.tooltip = "Readability score";
 	context.subscriptions.push(readabilityStatusBarItem);
 
 	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(updateStatusBarItem));
