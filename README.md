@@ -17,6 +17,7 @@ This is the README for your extension "read-easy". After writing up a brief desc
   * This took a lot longer than expected (was non-essential) but finally it works.
 * [ ] Convert the readability data into a more humane scale
 * [ ] Make the information actionable
+* [ ] Add tooltip to statusbar item
 * [ ] Do some tests
 * [ ] Add a command for the command palette
 * [ ] Add typing to "text-readability"
