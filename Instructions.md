@@ -29,5 +29,5 @@ VS Code offers a variety of ways to extend the workbench: status bar items, tree
 ## Resources
 
 VS Code Extension API Documentation
-text-readability package
+[text-readability package](https://www.npmjs.com/package/text-readability)
 VS Code extension samples
