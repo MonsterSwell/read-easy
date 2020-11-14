@@ -5,7 +5,9 @@ import { window, StatusBarItem, StatusBarAlignment, ExtensionContext, Range, com
 /// <reference path="text-readability.d.ts"/>
 import * as readability from "text-readability";
 
-let readabilityStatusBarItem: StatusBarItem;
+const difficultPhraseDecorationType = window.createTextEditorDecorationType({
+	backgroundColor: "red"
+});
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -24,68 +26,106 @@ export function activate(context: ExtensionContext) {
 		// Display a message box to the user
 		window.showInformationMessage('Hello World from read-easy!');
 	});
-
 	context.subscriptions.push(disposable);
 
-	readabilityStatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, 100);
+	let readabilityStatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, 100);
 	readabilityStatusBarItem.tooltip = "Readability score";
 	context.subscriptions.push(readabilityStatusBarItem);
 
-	context.subscriptions.push(window.onDidChangeActiveTextEditor(updateStatusBarItem));
-	context.subscriptions.push(window.onDidChangeTextEditorSelection(updateStatusBarItem));
+	let difficultyStatusGauge = new DifficultyStatusGauge(readabilityStatusBarItem);
+	context.subscriptions.push(difficultyStatusGauge);
 
-	updateStatusBarItem();
+	context.subscriptions.push(window.onDidChangeActiveTextEditor(difficultyStatusGauge.updateStatusItem, difficultyStatusGauge));
+	context.subscriptions.push(window.onDidChangeTextEditorSelection(difficultyStatusGauge.updateStatusItem, difficultyStatusGauge));
+
+	let difficultyTextDecorator = new DifficultyTextDecorator();
+	context.subscriptions.push(difficultyTextDecorator);
+
+	context.subscriptions.push(window.onDidChangeActiveTextEditor(difficultyTextDecorator.updateDecorations, difficultyTextDecorator));
+	context.subscriptions.push(window.onDidChangeTextEditorSelection(difficultyTextDecorator.updateDecorations, difficultyTextDecorator));
 }
 
-const difficultPhraseDecorationType = window.createTextEditorDecorationType({
-	backgroundColor: "red"
-});
-
-
-function updateStatusBarItem(): void {
-	window.showInformationMessage('Update status bar');
-
-	readabilityStatusBarItem.text = `$(book)`;
-	readabilityStatusBarItem.show();
-
-	if (window.activeTextEditor) {
-		const text = window.activeTextEditor?.document.getText();
-		console.log(text);
-
-		const rv = readability.daleChallReadabilityScore(text);
-		console.log(`Debug: ${rv} `);
-
-		readabilityStatusBarItem.text = `$(book) ${translateValue(rv)} `;
-
-		// Update decorations
-		const regEx = /[^\.]+\./g;
-		const difficultPhrases: DecorationOptions[] = [];
-		let match;
-		while ((match = regEx.exec(text))) {
-			const startPos = window.activeTextEditor.document.positionAt(match.index);
-			const endPos = window.activeTextEditor.document.positionAt(match.index + match[0].length);
-
-			if (readability.daleChallReadabilityScore(match[0]) > 9) {
-				const decoration = { range: new Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
-				difficultPhrases.push(decoration);
-			}
-
-			console.log("Matched");
-			console.log(match.index);
-		}
-		window.activeTextEditor.setDecorations(difficultPhraseDecorationType, difficultPhrases);
-	}
-}
-
-function translateValue(val: number): string {
-	if (val < 4) {
-		return "easy";
-	} else if (val >= 4 && val <= 9) {
-		return "medium";
-	} else {
-		return "hard";
-	}
-}
 
 // this method is called when your extension is deactivated
 export function deactivate() { }
+
+
+class DifficultyStatusGauge {
+	private _statusBarItem: StatusBarItem;
+
+	public constructor(statusBarItem: StatusBarItem) {
+		this._statusBarItem = statusBarItem;
+	}
+
+	public updateStatusItem() {
+		console.log("In update difficulty");
+
+		let editor = window.activeTextEditor;
+		if (!editor) {
+			console.log("Hiding status bar item");
+			this._statusBarItem.hide();
+			return;
+		}
+
+		this._statusBarItem.show();
+
+		let text = editor.document.getText();
+
+		if (text) {
+			console.log(`Got text ${text}`);
+
+			let difficulty = this._getDifficulty(text);
+			this._statusBarItem.text = `$(book) ${this._translateValue(difficulty)}`;
+		} else {
+			console.log("Got no text");
+		}
+	}
+
+	public _getDifficulty(text: string): number {
+		return readability.daleChallReadabilityScore(text);
+	}
+
+	public _translateValue(val: number): string {
+		if (val < 4) {
+			return "easy";
+		} else if (val >= 4 && val <= 9) {
+			return "medium";
+		} else {
+			return "hard";
+		}
+	}
+
+	public dispose() {
+		this._statusBarItem.dispose();
+	}
+}
+
+class DifficultyTextDecorator {
+	public updateDecorations() {
+		if (window.activeTextEditor) {
+			let text = window.activeTextEditor.document.getText();
+
+			// Update decorations
+			const regEx = /[^\.]+\./g;
+			const difficultPhrases: DecorationOptions[] = [];
+
+			let match;
+			while ((match = regEx.exec(text))) {
+				const startPos = window.activeTextEditor.document.positionAt(match.index);
+				const endPos = window.activeTextEditor.document.positionAt(match.index + match[0].length);
+
+				if (readability.daleChallReadabilityScore(match[0]) > 9) {
+					const decoration = { range: new Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
+					difficultPhrases.push(decoration);
+				}
+
+				console.log("Matched");
+				console.log(match.index);
+			}
+
+			window.activeTextEditor.setDecorations(difficultPhraseDecorationType, difficultPhrases);
+		}
+	}
+
+	public dispose() { }
+}
