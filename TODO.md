@@ -19,7 +19,7 @@
   * [ ] Add GIF
 * [ ] Tweak highlighted sentence not to contain leading space
 * [ ] Do some tests
-  * [ ] [Testing extensions](https://code.visualstudio.com/api/working-with-extensions/testing-extension) is pretty involved
   * [ ] Test the basic model
+  * [ ] [Testing extensions](https://code.visualstudio.com/api/working-with-extensions/testing-extension) is pretty involved so let's not do that right now.
 * [ ] Add a command for the command palette?
 * [ ] Make user setting for limits?
