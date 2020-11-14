@@ -41,13 +41,26 @@ function updateStatusBarItem(): void {
 
 	const text = vscode.window.activeTextEditor?.document.getText();
 
+	console.log(text);
+
+	readabilityStatusBarItem.text = `$(book)`;
+
 	if (text) {
-		const rv = readability.textStandard(text, true);
+		const rv = readability.fleschKincaidGrade(text);
+		console.log(`Debug: ${rv} `);
 
-		console.log(`Debug: ${rv}`);
+		readabilityStatusBarItem.text = `$(book) ${translateValue(rv)} `;
+	}
+	readabilityStatusBarItem.show();
+}
 
-		readabilityStatusBarItem.text = `$(book) ${rv}`;
-		readabilityStatusBarItem.show();
+function translateValue(val: number): string {
+	if (val < 4) {
+		return "easy";
+	} else if (val >= 4 && val <= 9) {
+		return "medium";
+	} else {
+		return "hard";
 	}
 }
 

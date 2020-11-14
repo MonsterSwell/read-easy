@@ -15,7 +15,7 @@ This is the README for your extension "read-easy". After writing up a brief desc
   * Display one of the scores in the status bar.
 * [x] Provide types for the external library
   * This took a lot longer than expected (was non-essential) but finally it works.
-* [ ] Convert the readability data into a more humane scale
+* [x] Convert the readability data into a more humane scale
 * [ ] Make the information actionable
 * [ ] Add tooltip to statusbar item
 * [ ] Do some tests
