@@ -52,7 +52,7 @@ function updateStatusBarItem(): void {
 		const text = vscode.window.activeTextEditor?.document.getText();
 		console.log(text);
 
-		const rv = readability.fleschKincaidGrade(text);
+		const rv = readability.daleChallReadabilityScore(text);
 		console.log(`Debug: ${rv} `);
 
 		readabilityStatusBarItem.text = `$(book) ${translateValue(rv)} `;

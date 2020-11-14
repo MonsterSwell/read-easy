@@ -22,12 +22,11 @@ This is the README for your extension "read-easy". After writing up a brief desc
   * So that it's clear what this is.
 * [x] Mark difficult words in the editor
   * That was a lot easier than expected and seems to do what it should. Phrases that are particularly difficult are now marked red.
-* [ ] Use daleChall globally
+* [x] Use daleChall globally
+  * It seems more correct to use the same metric both for the indicator as for the difficult phrases.
 * [ ] Organize the code a bit better
-* [ ] Make the information actionable
 * [ ] Do some tests
-* [ ] Add a command for the command palette
-* [ ] Add typing to "text-readability"
+* [ ] Add a command for the command palette?
 
 ## Features
 
