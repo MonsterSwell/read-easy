@@ -15,24 +15,19 @@ const DIFFICULT_DIFFICULTY = 8;
 export function activate(context: ExtensionContext) {
 	console.log('Congratulations, your extension "read-easy" is now active!');
 
-	// TODO remove sample command
-	let disposable = commands.registerCommand('read-easy.helloWorld', () => {
-		window.showInformationMessage('Hello World from read-easy!');
-	});
-	context.subscriptions.push(disposable);
-
-	// Setup Status Bar Item
+	// Create Status Bar Item
 	let readabilityStatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, 100);
 	readabilityStatusBarItem.tooltip = "Readability score";
 	context.subscriptions.push(readabilityStatusBarItem);
 
+	// Wire up Status Bar Item
 	let difficultyStatusGauge = new DifficultyStatusGauge(readabilityStatusBarItem);
 	context.subscriptions.push(difficultyStatusGauge);
 
 	context.subscriptions.push(window.onDidChangeActiveTextEditor(difficultyStatusGauge.updateStatusItem, difficultyStatusGauge));
 	context.subscriptions.push(window.onDidChangeTextEditorSelection(difficultyStatusGauge.updateStatusItem, difficultyStatusGauge));
 
-	// Setup Text Decorator
+	// Wire up Text Decorator
 	let difficultyTextDecorator = new DifficultyTextDecorator();
 	context.subscriptions.push(difficultyTextDecorator);
 
