@@ -99,17 +99,23 @@ class DifficultyTextDecorator {
 			let text = window.activeTextEditor.document.getText();
 
 			// Update decorations
-			const regEx = /[^\.]+\./g;
+			const regEx = /(?:^|\s+)([^.!?]*[.!?])/gm;
+			const matches = text.matchAll(regEx);
 			const difficultPhrases: DecorationOptions[] = [];
 
-			let match;
-			while ((match = regEx.exec(text))) {
-				const startPos = window.activeTextEditor.document.positionAt(match.index);
-				const endPos = window.activeTextEditor.document.positionAt(match.index + match[0].length);
+			for (const match of matches) {
+				const group = match[1];
 
-				if (readability.daleChallReadabilityScore(match[0]) > DIFFICULT_DIFFICULTY) {
-					const decoration = { range: new Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
-					difficultPhrases.push(decoration);
+				if (match.index !== undefined) {
+					// Calculate where in the match the group starts (to get rid of pesky leading spaces which are part of the match but not of the group)
+					const groupIndex = match[0].indexOf(group);
+					const startPos = window.activeTextEditor.document.positionAt(match.index + groupIndex);
+					const endPos = window.activeTextEditor.document.positionAt(match.index + match[0].length);
+
+					if (readability.daleChallReadabilityScore(group) > DIFFICULT_DIFFICULTY) {
+						const decoration = { range: new Range(startPos, endPos), hoverMessage: `Difficult to read` };
+						difficultPhrases.push(decoration);
+					}
 				}
 			}
 
