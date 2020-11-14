@@ -27,7 +27,10 @@ This is the README for your extension "read-easy". After writing up a brief desc
 * [ ] Organize the code a bit better
   * [ ] Extract threshold for difficult words
 * [ ] Make user setting for limits?
+* [ ] Tweak highlighted element not to contain leading space
 * [ ] Do some tests
+  * [ ] [Testing extensions](https://code.visualstudio.com/api/working-with-extensions/testing-extension) is pretty involved
+  * [ ] Test the basic models
 * [ ] Add a command for the command palette?
 
 ## Features
