@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import * as rs from "text-readability";
+import * as readability from "text-readability";
 
 let readabilityStatusBarItem: vscode.StatusBarItem;
 
@@ -35,11 +35,18 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function updateStatusBarItem(): void {
-	const text = vscode.window.activeTextEditor?.document.getText();
-	const readability = rs.linsearWriteFormula(text);
+	vscode.window.showInformationMessage('Update status bar');
 
-	readabilityStatusBarItem.text = `$(book) ${readability}`;
-	readabilityStatusBarItem.show();
+	const text = vscode.window.activeTextEditor?.document.getText();
+
+	if (text) {
+		const rv = readability.textStandard(text, true);
+
+		console.log(`Debug: ${rv}`);
+
+		readabilityStatusBarItem.text = `$(book) ${rv}`;
+		readabilityStatusBarItem.show();
+	}
 }
 
 // this method is called when your extension is deactivated
