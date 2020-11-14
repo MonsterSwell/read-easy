@@ -12,25 +12,16 @@ const difficultPhraseDecorationType = window.createTextEditorDecorationType({
 const MEDIUM_DIFFICULTY = 4;
 const DIFFICULT_DIFFICULTY = 8;
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "read-easy" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
+	// TODO remove sample command
 	let disposable = commands.registerCommand('read-easy.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
 		window.showInformationMessage('Hello World from read-easy!');
 	});
 	context.subscriptions.push(disposable);
 
+	// Setup Status Bar Item
 	let readabilityStatusBarItem = window.createStatusBarItem(StatusBarAlignment.Left, 100);
 	readabilityStatusBarItem.tooltip = "Readability score";
 	context.subscriptions.push(readabilityStatusBarItem);
@@ -41,6 +32,7 @@ export function activate(context: ExtensionContext) {
 	context.subscriptions.push(window.onDidChangeActiveTextEditor(difficultyStatusGauge.updateStatusItem, difficultyStatusGauge));
 	context.subscriptions.push(window.onDidChangeTextEditorSelection(difficultyStatusGauge.updateStatusItem, difficultyStatusGauge));
 
+	// Setup Text Decorator
 	let difficultyTextDecorator = new DifficultyTextDecorator();
 	context.subscriptions.push(difficultyTextDecorator);
 
@@ -52,7 +44,6 @@ export function activate(context: ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
-
 class DifficultyStatusGauge {
 	private _statusBarItem: StatusBarItem;
 
@@ -61,11 +52,10 @@ class DifficultyStatusGauge {
 	}
 
 	public updateStatusItem() {
-		console.log("In update difficulty");
-
 		let editor = window.activeTextEditor;
 		if (!editor) {
 			console.log("Hiding status bar item");
+
 			this._statusBarItem.hide();
 			return;
 		}
@@ -75,12 +65,12 @@ class DifficultyStatusGauge {
 		let text = editor.document.getText();
 
 		if (text) {
-			console.log(`Got text ${text}`);
+			// console.log(`Got text ${text}`);
 
 			let difficulty = this._getDifficulty(text);
 			this._statusBarItem.text = `$(book) Difficulty: ${this._translateValue(difficulty)}`;
 		} else {
-			console.log("Got no text");
+			this._statusBarItem.text = `$(book) Difficulty: none`;
 		}
 	}
 
@@ -121,9 +111,6 @@ class DifficultyTextDecorator {
 					const decoration = { range: new Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
 					difficultPhrases.push(decoration);
 				}
-
-				console.log("Matched");
-				console.log(match.index);
 			}
 
 			window.activeTextEditor.setDecorations(difficultPhraseDecorationType, difficultPhrases);
