@@ -24,7 +24,7 @@ This is the README for your extension "read-easy". After writing up a brief desc
   * That was a lot easier than expected and seems to do what it should. Phrases that are particularly difficult are now marked red.
 * [x] Use daleChall globally
   * It seems more correct to use the same metric both for the indicator as for the difficult phrases.
-* [ ] Organize the code a bit better
+* [x] Organize the code a bit better
   * [ ] Extract threshold for difficult words
 * [ ] Make user setting for limits?
 * [ ] Tweak highlighted element not to contain leading space
