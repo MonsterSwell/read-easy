@@ -78,7 +78,7 @@ class DifficultyStatusGauge {
 			console.log(`Got text ${text}`);
 
 			let difficulty = this._getDifficulty(text);
-			this._statusBarItem.text = `$(book) ${this._translateValue(difficulty)}`;
+			this._statusBarItem.text = `$(book) Difficulty: ${this._translateValue(difficulty)}`;
 		} else {
 			console.log("Got no text");
 		}
