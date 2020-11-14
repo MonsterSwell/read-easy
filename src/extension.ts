@@ -37,22 +37,44 @@ export function activate(context: vscode.ExtensionContext) {
 	updateStatusBarItem();
 }
 
+const difficultPhraseDecorationType = vscode.window.createTextEditorDecorationType({
+	backgroundColor: "red"
+});
+
+
 function updateStatusBarItem(): void {
 	vscode.window.showInformationMessage('Update status bar');
 
-	const text = vscode.window.activeTextEditor?.document.getText();
-
-	console.log(text);
-
 	readabilityStatusBarItem.text = `$(book)`;
+	readabilityStatusBarItem.show();
 
-	if (text) {
+	if (vscode.window.activeTextEditor) {
+		const text = vscode.window.activeTextEditor?.document.getText();
+		console.log(text);
+
 		const rv = readability.fleschKincaidGrade(text);
 		console.log(`Debug: ${rv} `);
 
 		readabilityStatusBarItem.text = `$(book) ${translateValue(rv)} `;
+
+		// Update decorations
+		const regEx = /[^\.]+\./g;
+		const difficultPhrases: vscode.DecorationOptions[] = [];
+		let match;
+		while ((match = regEx.exec(text))) {
+			const startPos = vscode.window.activeTextEditor.document.positionAt(match.index);
+			const endPos = vscode.window.activeTextEditor.document.positionAt(match.index + match[0].length);
+
+			if (readability.daleChallReadabilityScore(match[0]) > 7) {
+				const decoration = { range: new vscode.Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
+				difficultPhrases.push(decoration);
+			}
+
+			console.log("Matched");
+			console.log(match.index);
+		}
+		vscode.window.activeTextEditor.setDecorations(difficultPhraseDecorationType, difficultPhrases);
 	}
-	readabilityStatusBarItem.show();
 }
 
 function translateValue(val: number): string {
