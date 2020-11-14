@@ -9,6 +9,9 @@ const difficultPhraseDecorationType = window.createTextEditorDecorationType({
 	backgroundColor: "red"
 });
 
+const MEDIUM_DIFFICULTY = 4;
+const DIFFICULT_DIFFICULTY = 8;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
@@ -86,9 +89,9 @@ class DifficultyStatusGauge {
 	}
 
 	public _translateValue(val: number): string {
-		if (val < 4) {
+		if (val < MEDIUM_DIFFICULTY) {
 			return "easy";
-		} else if (val >= 4 && val <= 9) {
+		} else if (val >= MEDIUM_DIFFICULTY && val <= DIFFICULT_DIFFICULTY) {
 			return "medium";
 		} else {
 			return "hard";
@@ -114,7 +117,7 @@ class DifficultyTextDecorator {
 				const startPos = window.activeTextEditor.document.positionAt(match.index);
 				const endPos = window.activeTextEditor.document.positionAt(match.index + match[0].length);
 
-				if (readability.daleChallReadabilityScore(match[0]) > 9) {
+				if (readability.daleChallReadabilityScore(match[0]) > DIFFICULT_DIFFICULTY) {
 					const decoration = { range: new Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
 					difficultPhrases.push(decoration);
 				}
