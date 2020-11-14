@@ -12,10 +12,13 @@ This is the README for your extension "read-easy". After writing up a brief desc
 ## TODOS
 
 * [x] Get the basic functionality to work
+  * Display one of the scores in the status bar.
+* [x] Provide types for the external library
+  * This took a lot longer than expected (was non-essential) but finally it works.
+* [ ] Convert the readability data into a more humane scale
+* [ ] Make the information actionable
 * [ ] Do some tests
 * [ ] Add a command for the command palette
-* [ ] Make the information actionable
-* [ ] Convert the readability data into a more humane scale
 * [ ] Add typing to "text-readability"
 
 ## Features
