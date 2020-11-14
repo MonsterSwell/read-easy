@@ -25,6 +25,8 @@ This is the README for your extension "read-easy". After writing up a brief desc
 * [x] Use daleChall globally
   * It seems more correct to use the same metric both for the indicator as for the difficult phrases.
 * [ ] Organize the code a bit better
+  * [ ] Extract threshold for difficult words
+* [ ] Make user setting for limits?
 * [ ] Do some tests
 * [ ] Add a command for the command palette?
 
