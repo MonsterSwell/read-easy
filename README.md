@@ -11,11 +11,12 @@ This is the README for your extension "read-easy". After writing up a brief desc
 
 ## TODOS
 
-* [ ] Get the basic functionality to work
+* [x] Get the basic functionality to work
 * [ ] Do some tests
 * [ ] Add a command for the command palette
 * [ ] Make the information actionable
 * [ ] Convert the readability data into a more humane scale
+* [ ] Add typing to "text-readability"
 
 ## Features
 
