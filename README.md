@@ -2,6 +2,21 @@
 
 This is the README for your extension "read-easy". After writing up a brief description, we recommend including the following sections.
 
+## Ideas
+
+* Display in status bar
+* Display as part of a language server
+* Sidebar or other widget for the full overview
+* Add custom command?
+
+## TODOS
+
+* [ ] Get the basic functionality to work
+* [ ] Do some tests
+* [ ] Add a command for the command palette
+* [ ] Make the information actionable
+* [ ] Convert the readability data into a more humane scale
+
 ## Features
 
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
