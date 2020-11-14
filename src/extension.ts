@@ -65,7 +65,7 @@ function updateStatusBarItem(): void {
 			const startPos = vscode.window.activeTextEditor.document.positionAt(match.index);
 			const endPos = vscode.window.activeTextEditor.document.positionAt(match.index + match[0].length);
 
-			if (readability.daleChallReadabilityScore(match[0]) > 7) {
+			if (readability.daleChallReadabilityScore(match[0]) > 9) {
 				const decoration = { range: new vscode.Range(startPos, endPos), hoverMessage: `Dale Chall: difficult` };
 				difficultPhrases.push(decoration);
 			}
