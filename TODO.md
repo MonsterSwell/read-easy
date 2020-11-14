@@ -1,4 +1,4 @@
-## Worklog
+# Worklog
 
 * [x] Get the basic functionality to work
   * Display one of the scores from the library in the status bar.
