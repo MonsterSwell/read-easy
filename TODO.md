@@ -18,12 +18,11 @@
 * [x] Add README
   * [x] Add GIF
 * [x] Tweak highlighted sentence not to contain leading space
+* [x] Do some tests
+  * [x] Test the basic model
 
 ## Backlog
 
-* [ ] Do some tests
-  * [ ] Test the basic model
-  * [ ] [Testing extensions](https://code.visualstudio.com/api/working-with-extensions/testing-extension) is pretty involved so let's not do that right now.
 * [ ] Add a command for the command palette
 * [ ] Make user setting for limits
 * [ ] Make it possible to disable highlighting

@@ -39,7 +39,7 @@ export function activate(context: ExtensionContext) {
 // this method is called when your extension is deactivated
 export function deactivate() { }
 
-class DifficultyStatusGauge {
+export class DifficultyStatusGauge {
 	private _statusBarItem: StatusBarItem;
 
 	public constructor(statusBarItem: StatusBarItem) {
